@@ -1,3 +1,5 @@
+import json
+
 import azure.functions as func
 import logging
 
@@ -19,13 +21,17 @@ def dummy_http_trigger(req: func.HttpRequest) -> func.HttpResponse:
 
     if name:
         return func.HttpResponse(
-            {
-                "message": f"Hello, {name}. This HTTP triggered function executed successfully."
-            },
+            json.dumps(
+                {
+                    "message": f"Hello, {name}. This HTTP triggered function executed successfully."
+                }
+            ),
             status_code=200,
+            mimetype="application/json",
         )
     else:
         return func.HttpResponse(
-            {"error": "Please pass a name on the query string or in the request body"},
+            json.dumps({"error": "Please pass a name on the query string or in the request body"}),
             status_code=400,
+            mimetype="application/json",
         )
